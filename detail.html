@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeTech | Chi Tiết Sản Phẩm</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS bổ sung để giỏ hàng Modal hoạt động mượt mà trên trang độc lập này */
+        .cart-modal { position: fixed; right: -450px; top: 0; width: 450px; height: 100%; background: white; z-index: 2000; transition: all 0.3s ease; padding: 40px; box-shadow: -15px 0 40px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .cart-modal.open { right: 0; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">Home<span>Tech.</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="index.html">Sản phẩm</a></li>
+            <li><a href="index.html">Giới thiệu</a></li>
+            <li><a href="index.html">Liên hệ</a></li>
+        </ul>
+        
+        <div class="cart-trigger" onclick="toggleCart()">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-count" id="cart-count">0</span>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <a href="index.html" class="btn" style="background: var(--dark); padding: 10px 20px; margin-bottom: 30px; display: inline-block;">
+            <i class="fa-solid fa-arrow-left"></i> Quay về trang chủ
+        </a>
+
+        <div class="grid-2" style="align-items: start; gap: 40px;">
+            <div style="background: white; padding: 20px; border-radius: 24px; border: 1px solid #e2e8f0; text-align: center;">
+                <img id="detail-image" src="" alt="" style="width: 100%; max-height: 400px; object-fit: contain; border-radius: 16px;">
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <span id="detail-category" style="background: #ffedd5; color: var(--primary); padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; align-self: flex-start; text-transform: uppercase;"></span>
+                <h1 id="detail-name" style="font-size: 2.5rem; font-weight: 800; line-height: 1.2;">Đang tải...</h1>
+                <p id="detail-price" style="font-size: 2rem; font-weight: 800; color: var(--primary); margin: 0;">0đ</p>
+                
+                <div style="border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; padding: 20px 0; margin: 10px 0;">
+                    <h3 style="margin-bottom: 10px; font-weight: 700;">Thông số kỹ thuật & Ưu điểm:</h3>
+                    <ul style="padding-left: 20px; color: var(--gray); display: flex; flex-direction: column; gap: 8px;">
+                        <li>Công nghệ thông minh tiết kiệm điện năng tiêu chuẩn Châu Âu.</li>
+                        <li>Thiết kế hiện đại, tinh tế, phù hợp với mọi không gian nhà ở.</li>
+                        <li>Chất liệu cao cấp, độ bền cao, an toàn tuyệt đối cho sức khỏe.</li>
+                        <li>Hỗ trợ kết nối và điều khiển từ xa qua ứng dụng điện thoại.</li>
+                    </ul>
+                </div>
+
+                <button id="detail-add-btn" class="btn" style="width: 100%; font-size: 1.1rem; padding: 18px;">
+                    <i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ hàng ngay
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3>Giỏ hàng (<span id="cart-count-side">0</span>)</h3>
+            <i class="fa-solid fa-xmark" style="cursor:pointer; font-size: 1.5rem;" onclick="toggleCart()"></i>
+        </div>
+        <div id="cart-items" style="flex: 1; overflow-y: auto;"></div>
+        <div style="border-top: 1px solid #eee; padding-top: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: 800; font-size: 1.2rem;">
+                <span>Tổng cộng:</span>
+                <span id="total-price">0đ</span>
+            </div>
+            <a href="index.html" class="btn" style="width: 100%; display: block;">Về trang chủ thanh toán</a>
+        </div>
+    </div>
+
+    <script src="products.js"></script>
+    <script>
+        // Lấy giỏ hàng từ LocalStorage nếu có, nếu không thì tạo mảng rỗng
+        let cart = JSON.parse(localStorage.getItem('hometech_cart')) || [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            updateCart(); // Cập nhật số lượng giỏ hàng trên navbar khi vừa load trang
+
+            // 1. Lấy ID sản phẩm từ URL (Ví dụ: detail.html?id=2)
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = parseInt(urlParams.get('id'));
+
+            // 2. Tìm sản phẩm trong products.js
+            const product = listProducts.find(p => p.id === productId);
+
+            if (product) {
+                // 3. Đổ dữ liệu vào giao diện
+                document.getElementById('detail-image').src = product.image;
+                document.getElementById('detail-image').alt = product.name;
+                document.getElementById('detail-name').innerText = product.name;
+                document.getElementById('detail-price').innerText = product.price.toLocaleString() + 'đ';
+                
+                let catName = "Gia Dụng";
+                if (product.category === 'kitchen') catName = "Gian Bếp Hiện Đại";
+                else if (product.category === 'air') catName = "Khí Sạch Sống Khỏe";
+                else if (product.category === 'clean') catName = "Dọn Dẹp Thông Minh";
+                document.getElementById('detail-category').innerText = catName;
+
+                // 4. Xử lý sự kiện nút bấm Thêm vào giỏ
+                document.getElementById('detail-add-btn').onclick = () => {
+                    addToCart(product.name, product.price, product.image);
+                };
+            } else {
+                document.getElementById('detail-name').innerText = "Không tìm thấy sản phẩm!";
+            }
+        });
+
+        // Hàm thêm sản phẩm và đồng bộ lưu vào LocalStorage
+        function addToCart(name, price, image) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name, price, image, quantity: 1 });
+            }
+            // Lưu lại giỏ hàng vào bộ nhớ trình duyệt
+            localStorage.setItem('hometech_cart', JSON.stringify(cart));
+            updateCart();
+            toggleCart();
+        }
+
+        // Cập nhật giao diện hiển thị giỏ hàng tại chỗ
+        function updateCart() {
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = totalCount;
+            document.getElementById('cart-count-side').innerText = totalCount;
+            
+            const cartList = document.getElementById('cart-items');
+            const totalEl = document.getElementById('total-price');
+            
+            if (cart.length === 0) {
+                cartList.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--gray);">Chưa có sản phẩm nào.</p>';
+                totalEl.innerText = '0đ';
+                return;
+            }
+
+            let total = 0;
+            cartList.innerHTML = cart.map((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                return `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; background:#f8fafc; padding:15px; border-radius:12px;">
+                        <div style="display:flex; gap:12px; align-items:center;">
+                            <img src="${item.image}" style="width:45px; height:45px; object-fit:cover; border-radius:8px;">
+                            <div>
+                                <p style="font-weight:700; color: var(--dark); margin:0; font-size:0.9rem;">${item.name}</p>
+                                <p style="color:var(--primary); font-size:0.85rem; margin:2px 0 0 0;">${item.price.toLocaleString()}đ x ${item.quantity}</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-trash" style="color:#ef4444; cursor:pointer;" onclick="removeFromCart(${index})"></i>
+                    </div>
+                `;
+            }).join('');
+            totalEl.innerText = total.toLocaleString() + 'đ';
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('hometech_cart', JSON.stringify(cart));
+            updateCart();
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-modal').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

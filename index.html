@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeTech | Gia Dụng Thông Minh Cao Cấp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ==========================================================================
+     MÀN HÌNH CHUYỂN ĐỘNG LOGO TOÀN MÀN HÌNH (PRELOADER SPLASH SCREEN)
+     ========================================================================== -->
+<div id="motion-preloader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 99999; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);">
+    
+    <div class="preloader-bg-icons" id="preloader-icons-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></div>
+
+    <div class="preloader-logo" style="position: relative; z-index: 2; text-align: center; opacity: 0; transform: scale(0.8); animation: logoReveal 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 3.5rem; font-weight: 800; color: #ffffff; letter-spacing: -1.5px;">
+        Home<span style="color: #f97316;">Tech.</span>
+    </div>
+</div>
+
+    <nav class="navbar">
+        <a onclick="showPage('home')" class="logo">Home<span>Tech.</span></a>
+        <ul class="nav-links">
+            <li><a onclick="showPage('home')" class="active" id="nav-home">Trang chủ</a></li>
+            <li><a onclick="showPage('product')" id="nav-product">Sản phẩm</a></li>
+            <li><a onclick="showPage('about')" id="nav-about">Giới thiệu</a></li>
+            <li><a onclick="showPage('contact')" id="nav-contact">Liên hệ</a></li>
+        </ul>
+        <!-- Tìm khối này trên Navbar của bạn -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <!-- Icon Giỏ Hàng giữ nguyên -->
+            <div class="cart-trigger" onclick="toggleCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="cart-count" id="cart-count">0</span>
+            </div>
+            <!-- THÊM ICON TÀI KHOẢN TẠI ĐÂY -->
+            <div class="account-trigger" onclick="window.location.href='account.html'" style="cursor: pointer; font-size: 1.2rem; transition: var(--transition);">
+            <i class="fa-solid fa-user" style="color: var(--dark);" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--dark)'"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Sáng Tạo Không Gian <span>Thông Minh.</span></h1>
+                <p>Nâng tầm trải nghiệm sống của bạn với hệ sinh thái đồ gia dụng điện tử hiện đại, chính hãng tại Đà Nẵng.</p>
+                <div style="display: flex; gap: 15px;">
+                    <button onclick="showPage('product')" class="btn">Mua sắm ngay</button>
+                    <button onclick="showPage('about')" class="btn" style="background: transparent; color: var(--dark); border: 2px solid var(--dark);">Tìm hiểu thêm</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="bg.jpg" alt="HomeTech Hero">
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="container">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <h3>Freeship Đà Nẵng</h3>
+                        <p>Giao hàng hỏa tốc tận nơi trong vòng 2 giờ</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <h3>Bảo Hành 12 Tháng</h3>
+                        <p>Cam kết chính hãng, lỗi 1 đổi 1 tại nhà</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-headset"></i>
+                        <h3>Hỗ Trợ 24/7</h3>
+                        <p>Đội ngũ kỹ thuật viên sẵn sàng tư vấn</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="categories-section">
+            <div class="container">
+                <div class="section-header" style="margin-bottom: 40px; padding-top: 20px;">
+                    <h2>Danh Mục Cảm Hứng</h2>
+                    <p>Tìm kiếm thiết bị phù hợp với từng không gian sống</p>
+                </div>
+                <div class="categories-grid">
+                    <div class="category-card" onclick="showCategoryPage('kitchen')">
+                        <div class="cat-icon"><i class="fa-solid fa-kitchen-set"></i></div>
+                        <h4>Gian Bếp Hiện Đại</h4>
+                        <span>Nồi chiên, lò nướng, máy xay</span>
+                    </div>
+                    <div class="category-card" onclick="showCategoryPage('air')">
+                        <div class="cat-icon"><i class="fa-solid fa-wind"></i></div>
+                        <h4>Khí Sạch Sống Khỏe</h4>
+                        <span>Máy lọc khí, quạt ion, bù ẩm</span>
+                    </div>
+                    <div class="category-card" onclick="showCategoryPage('clean')">
+                        <div class="cat-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h4>Dọn Dẹp Thông Minh</h4>
+                        <span>Máy hút bụi, robot lau nhà</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="product" class="page">
+        <div class="filter-controls">
+            <div class="search-box-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-product" placeholder="Tìm kiếm sản phẩm thông minh..." oninput="filterAdvanced()">
+            </div>
+            
+            <div class="select-wrapper">
+                <select id="filter-category" onchange="filterAdvanced()">
+                    <option value="all">Tất cả danh mục</option>
+                    <option value="kitchen">Gian Bếp Hiện Đại</option>
+                    <option value="air">Khí Sạch Sống Khỏe</option>
+                    <option value="clean">Dọn Dẹp Thông Minh</option>
+                </select>
+            </div>
+
+            <div class="select-wrapper">
+                <select id="filter-price" onchange="filterAdvanced()">
+                    <option value="all">Mọi mức giá</option>
+                    <option value="under-3m">Dưới 3 triệu</option>
+                    <option value="3m-5m">Từ 3 - 5 triệu</option>
+                    <option value="over-5m">Trên 5 triệu</option>
+                </select>
+            </div>
+        </div>
+        <div class="container">
+            <div class="section-header">
+                <h2>Hệ Sinh Thái Sản Phẩm</h2>
+                <p>Khám phá các thiết bị công nghệ gia dụng đỉnh cao</p>
+            </div>
+            <div id="product-grid-container" class="product-grid"></div>
+        </div>
+    </div>
+    
+    <div id="about" class="page">
+        <div class="container" style="max-width: 1000px;"> 
+            <div class="about-hero">
+                <span class="sub-title">Chúng tôi là HomeTech</span>
+                <h2>Nâng tầm cuộc sống gia đình bằng công nghệ thông minh.</h2>
+                <div class="line-separator"></div>
+            </div>
+
+            <div class="grid-2" style="gap: 60px; margin-top: 40px; align-items: start;">
+                <div class="about-statement">
+                    <h3>Sứ mệnh của chúng tôi</h3>
+                    <p>HomeTech ra đời với mục tiêu duy nhất: biến ngôi nhà truyền thống của bạn thành một không gian sống thông minh, an toàn và tràn đầy cảm hứng. Chúng tôi chọn lọc và cung cấp các thiết bị gia dụng điện tử tối tân nhất, giúp đơn giản hóa việc vận hành tổ ấm của bạn mỗi ngày.</p>
+                </div>
+                <div class="about-statement">
+                    <h3>Giải pháp toàn diện</h3>
+                    <p>Không chỉ bán sản phẩm đơn lẻ, HomeTech mang đến một hệ sinh thái đồng bộ cho gia đình bạn. Từ các thiết bị cải thiện sức khỏe như máy lọc không khí, quạt bù ẩm đến các robot dọn dẹp tự động và công nghệ gian bếp hiện đại — tất cả đều được thiết kế để bạn có nhiều thời gian tận hưởng cuộc sống hơn.</p>
+                </div>
+            </div>
+
+            <div class="about-banner-minimal">
+                <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1000&auto=format&fit=crop&q=80" alt="Không gian sống tối giản hiện đại HomeTech">
+            </div>
+
+            <div class="values-minimal-section">
+                <div class="value-minimal-row">
+                    <span class="value-number">01</span>
+                    <div class="value-content">
+                        <h4>Chất lượng chính hãng</h4>
+                        <p>Mọi thiết bị trong hệ sinh thái của HomeTech đều được tuyển chọn nghiêm ngặt từ các thương hiệu công nghệ lớn trên thế giới, đảm bảo đầy đủ tiêu chuẩn kiểm định an toàn và độ bền cao.</p>
+                    </div>
+                </div>
+
+                <div class="value-minimal-row">
+                    <span class="value-number">02</span>
+                    <div class="value-content">
+                        <h4>Trải nghiệm thông minh</h4>
+                        <p>Chúng tôi tập trung vào các giải pháp kết nối IoT hiện đại, cho phép các thành viên trong gia đình dễ dàng quản lý, điều khiển từ xa thông qua điện thoại thông minh hoặc giọng nói.</p>
+                    </div>
+                </div>
+            </div> </div> </div> <div id="contact" class="page">
+        <div class="container">
+            <div class="section-header">
+                <h2>Liên Hệ</h2>
+                <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn</p>
+            </div>
+            <div class="grid-2" style="align-items: stretch;">
+                <div class="contact-info">
+                    <h3>Thông tin</h3>
+                    <p style="margin: 20px 0;"><i class="fa-solid fa-location-dot"></i> 123 Nguyễn Văn Linh, Đà Nẵng</p>
+                    <p style="margin-bottom: 20px;"><i class="fa-solid fa-phone"></i> 0236 888 9999</p>
+                    <div style="margin-top: 40px;">
+                        <p>Thời gian làm việc:</p>
+                        <p style="color: var(--primary);">8:00 - 21:00 (T2 - CN)</p>
+                    </div>
+                </div>
+                <form onsubmit="event.preventDefault(); alert('Cảm ơn bạn! Chúng tôi sẽ phản hồi sớm.')" style="background:white; padding: 40px; border-radius:30px; border: 1px solid #e2e8f0;">
+                    <div class="input-group">
+                        <label>Họ và tên</label>
+                        <input type="text" placeholder="Ví dụ: Nguyễn Văn A" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email liên hệ</label>
+                        <input type="email" placeholder="email@domain.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Lời nhắn</label>
+                        <textarea rows="4" placeholder="Nội dung cần tư vấn..."></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width:100%">Gửi tin nhắn ngay</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="checkout-page" class="page">
+        <div class="container">
+            <div class="section-header">
+                <h2>Thanh Toán Đơn Hàng</h2>
+                <p>Vui lòng điền thông tin chính xác để hoàn tất đặt hàng</p>
+            </div>
+            <div class="grid-2" style="align-items: start;">
+                <form onsubmit="confirmOrder(event)" class="checkout-form">
+                    <h3>Thông tin giao hàng</h3>
+                    <div class="input-group">
+                        <label>Họ tên người nhận <span style="color: red;">*</span></label>
+                        <input type="text" id="checkout-name" placeholder="Nguyễn Văn A" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Số điện thoại <span style="color: red;">*</span></label>
+                        <input type="tel" id="checkout-phone" placeholder="0905xxxxxx" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Địa chỉ nhận hàng <span style="color: red;">*</span></label>
+                        <input type="text" id="checkout-address" placeholder="Số nhà, tên đường, quận/huyện" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Phương thức thanh toán</label>
+                        <select id="checkout-payment">
+                            <option value="cod">Thanh toán khi nhận hàng (COD)</option>
+                            <option value="banking">Chuyển khoản ngân hàng (Qua mã QR)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Xác nhận đặt hàng</button>
+                </form>
+
+                <div class="order-summary-box">
+                    <h3>Đơn hàng của bạn</h3>
+                    <div id="checkout-items-list"></div>
+                    <div class="checkout-total-line">
+                        <span>Tổng cộng:</span>
+                        <span id="checkout-total-price">0đ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3>Giỏ hàng (<span id="cart-count-side">0</span>)</h3>
+            <i class="fa-solid fa-xmark" style="cursor:pointer; font-size: 1.5rem;" onclick="toggleCart()"></i>
+        </div>
+        <div id="cart-items" style="flex: 1; overflow-y: auto;"></div>
+        <div style="border-top: 1px solid #eee; padding-top: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: 800; font-size: 1.2rem;">
+                <span>Tổng cộng:</span>
+                <span id="total-price">0đ</span>
+            </div>
+            <button class="btn" style="width: 100%" onclick="goToCheckout()">Tiến hành thanh toán</button>
+        </div>
+    </div>
+
+   <!-- BONG BÓNG TƯ VẤN 3 CỔNG CAO CẤP (THAY THẾ CHO CHAT-TOGGLE CŨ) -->
+<div class="consultation-widget" style="position: fixed; bottom: 30px; right: 30px; z-index: 2000; display: flex; flex-direction: column-reverse; align-items: center; gap: 12px;">
+    
+    <!-- Nút kích hoạt chính (Khi bấm sẽ tự gọi hàm toggleConsultationMenu) -->
+    <button class="widget-trigger-btn" onclick="toggleConsultationMenu()" style="width: 56px; height: 56px; border-radius: 50%; background: var(--dark); color: white; border: none; cursor: pointer; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2); position: relative; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);">
+        <i class="fa-solid fa-headset" id="widget-icon"></i>
+        <!-- Vòng sóng mạch đập lan tỏa -->
+        <span class="widget-pulse" style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--dark); opacity: 0.4; z-index: -1; animation: widgetPulse 2s infinite;"></span>
+    </button>
+
+    <!-- Danh mục 3 cổng liên hệ nhanh -->
+    <div class="consultation-menu" id="consult-menu" style="display: flex; flex-direction: column; gap: 10px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);">
+        <!-- Cổng 1: SMS / Zalo -->
+        <a href="https://zalo.me/02368889999" target="_blank" class="consult-item" style="width: 48px; height: 48px; border-radius: 50%; background: #0068ff; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; text-decoration: none; box-shadow: 0 8px 20px rgba(0, 104, 255, 0.15); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+            <i class="fa-solid fa-comment-sms"></i>
+        </a>
+        <!-- Cổng 2: Facebook Messenger -->
+        <a href="https://m.me/hometech" target="_blank" class="consult-item" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #00c6ff, #0072ff); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; text-decoration: none; box-shadow: 0 8px 20px rgba(0, 114, 255, 0.15); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+            <i class="fa-brands fa-facebook-messenger"></i>
+        </a>
+        <!-- Cổng 3: Hotline gọi trực tiếp -->
+        <a href="tel:02368889999" class="consult-item" style="width: 48px; height: 48px; border-radius: 50%; background: #22c55e; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; text-decoration: none; box-shadow: 0 8px 20px rgba(34, 197, 94, 0.15); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+            <i class="fa-solid fa-phone"></i>
+        </a>
+    </div>
+</div>
+
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <div>
+                <strong>HomeTech Assistant</strong>
+                <p>Hỗ trợ tư vấn nhanh 24/7</p>
+            </div>
+            <i class="fa-solid fa-xmark" onclick="toggleChat()" style="cursor:pointer;"></i>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="chat-message bot">Chào bạn! Tôi là trợ lý ảo HomeTech Đà Nẵng. Bạn cần tư vấn dòng sản phẩm nào ạ?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Nhập câu hỏi..." onkeypress="if(event.key === 'Enter') sendChat()">
+            <button class="btn" style="padding: 10px 20px;" onclick="sendChat()">Gửi</button>
+        </div>
+    </div>
+
+    <div class="success-modal-overlay" id="success-modal">
+        <div class="success-modal-box">
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2>Đặt Hàng Thành Công!</h2>
+            <p>Cảm ơn bạn đã mua sắm. Đơn hàng đã được ghi nhận trên hệ thống.</p>
+            <div class="success-details">
+                <p><strong>Người nhận:</strong> <span id="pop-name">...</span></p>
+                <p><strong>Số điện thoại:</strong> <span id="pop-phone">...</span></p>
+                <p><strong>Tổng tiền:</strong> <span id="pop-total" style="color: var(--primary); font-weight: 800;">0đ</span></p>
+            </div>
+            <button class="btn" style="width: 100%;" onclick="closeSuccessModal()">Tiếp tục mua sắm</button>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <div class="container"> 
+            
+            <div class="footer-grid">
+                <div class="footer-column brand-info">
+                    <a onclick="showPage('home')" class="logo">Home<span>Tech.</span></a>
+                    <p class="footer-desc">Hệ sinh thái thiết bị gia dụng điện tử thông minh cao cấp, mang giải pháp công nghệ IoT tiện nghi và hiện đại đến mọi gia đình Việt.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Sản Phẩm</h4>
+                    <ul class="footer-links">
+                        <li><a onclick="showCategoryPage('kitchen')">Gian Bếp Hiện Đại</a></li>
+                        <li><a onclick="showCategoryPage('air')">Khí Sạch Sống Khỏe</a></li>
+                        <li><a onclick="showCategoryPage('clean')">Dọn Dẹp Thông Minh</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Điều Hướng</h4>
+                    <ul class="footer-links">
+                        <li><a onclick="showPage('home')">Trang chủ</a></li>
+                        <li><a onclick="showPage('product')">Hệ sinh thái sản phẩm</a></li>
+                        <li><a onclick="showPage('about')">Về HomeTech</a></li>
+                        <li><a onclick="showPage('contact')">Liên hệ & Hỗ trợ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column contact-column">
+                    <h4>Trụ Sở Đà Nẵng</h4>
+                    <p><i class="fa-solid fa-location-dot"></i> 123 Nguyễn Văn Linh, Hải Châu, Đà Nẵng</p>
+                    <p><i class="fa-solid fa-phone"></i> 0236 888 9999</p>
+                    <p><i class="fa-solid fa-envelope"></i> support@hometech.vn</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 HomeTech Studio. Phát triển bởi VKU Team. All rights reserved.</p>
+                <div class="footer-payment-icons">
+                    <i class="fa-brands fa-cc-visa" title="Visa Card"></i>
+                    <i class="fa-brands fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fa-solid fa-qrcode" title="Chuyển khoản QR"></i>
+                </div>
+            </div>
+
+        </div> 
+    </footer>
+    <!-- ==========================================================================
+         TRANG QUẢN LÝ TÀI KHOẢN (#account)
+         ========================================================================== -->
+    <div id="account" class="page">
+        <div class="container" style="max-width: 900px; margin-top: 40px; margin-bottom: 60px;">
+            <div class="section-header" style="padding-top: 20px; margin-bottom: 40px;">
+                <h2>Tài Khoản Của Bạn</h2>
+                <p>Quản lý thông tin thành viên và theo dõi trạng thái đơn hàng</p>
+            </div>
+
+            <div class="grid-2" style="align-items: start; gap: 40px;">
+                <!-- Cột trái: Form thông tin cá nhân -->
+                <div style="background: white; padding: 40px; border-radius: 24px; border: 1px solid #e2e8f0;">
+                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: var(--dark);">Thông tin cá nhân</h3>
+                    <form onsubmit="event.preventDefault(); alert('Cập nhật thông tin thành công!')">
+                        <div class="input-group">
+                            <label>Họ và tên</label>
+                            <input type="text" value="Nguyễn Văn A" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Số điện thoại</label>
+                            <input type="tel" value="0905123456" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Địa chỉ mặc định</label>
+                            <input type="text" value="123 Nguyễn Văn Linh, Hải Châu, Đà Nẵng">
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%; margin-top: 10px; padding: 12px;">Lưu thay đổi</button>
+                    </form>
+                </div>
+
+                <!-- Cột phải: Lịch sử mua hàng -->
+                <div style="background: var(--dark); color: white; padding: 40px; border-radius: 24px;">
+                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; color: var(--white);">Lịch sử đơn hàng</h3>
+                    <div id="order-history-list">
+                        <!-- Đơn hàng mẫu 01 -->
+                        <div style="padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.95rem; margin-bottom: 5px;">
+                                <span>Mã ĐH: #HT-9021</span>
+                                <span style="color: #22c55e;">Đã giao hàng</span>
+                            </div>
+                            <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 5px;">Robot hút bụi lau nhà thông minh IoT</p>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                <span style="color: #94a3b8;">16/06/2026</span>
+                                <span style="color: var(--primary); font-weight: 700;">5.490.000đ</span>
+                            </div>
+                        </div>
+                        <!-- Đơn hàng mẫu 02 -->
+                        <div style="padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.95rem; margin-bottom: 5px;">
+                                <span>Mã ĐH: #HT-8840</span>
+                                <span style="color: #f59e0b;">Đang xử lý</span>
+                            </div>
+                            <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 5px;">Máy lọc không khí ion âm cao cấp</p>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                                <span style="color: #94a3b8;">12/06/2026</span>
+                                <span style="color: var(--primary); font-weight: 700;">3.200.000đ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

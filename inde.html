@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeTech | Gia Dụng Thông Minh Cao Cấp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #f97316;
+            --primary-hover: #ea580c;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --white: #ffffff;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--light); color: var(--dark); line-height: 1.6; }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            padding: 1rem 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--dark); text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        .cart-trigger { position: relative; cursor: pointer; font-size: 1.2rem; }
+        .cart-count { position: absolute; top: -8px; right: -10px; background: var(--primary); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 20px; font-weight: bold; }
+
+        /* Pages System */
+        .page { display: none; min-height: 80vh; animation: fadeIn 0.4s ease; }
+        .page.active { display: block; }
+
+        /* Sections Utility */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-header { text-align: center; margin-bottom: 60px; padding-top: 60px; }
+        .section-header h2 { font-size: 2.8rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+        .section-header p { color: var(--gray); font-size: 1.1rem; }
+
+        /* Hero */
+        .hero { height: 90vh; display: flex; align-items: center; padding: 0 8%; background: linear-gradient(135deg, #fff 0%, #f1f5f9 100%); }
+        .hero-content { flex: 1; }
+        .hero-content h1 { font-size: 4.2rem; line-height: 1.1; font-weight: 800; margin-bottom: 25px; }
+        .hero-image { flex: 1; text-align: right; }
+        .hero-image img { width: 90%; filter: drop-shadow(20px 20px 60px rgba(0,0,0,0.1)); animation: float 5s ease-in-out infinite; }
+
+        /* Products Grid */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
+        .product-card { background: var(--white); border-radius: 24px; padding: 25px; border: 1px solid #f1f5f9; transition: var(--transition); }
+        .product-card:hover { transform: translateY(-12px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08); border-color: var(--primary); }
+        .img-wrapper { background: #f8fafc; border-radius: 18px; min-height: 320px; height: auto; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; overflow: hidden; }
+        .img-wrapper img { width: 100%; height: 100%; object-fit: contain; transition: var(--transition); }
+        .product-card:hover img { transform: scale(1.05); }
+        .price { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin: 15px 0; }
+
+        /* Buttons */
+        .btn { display: inline-block; padding: 16px 35px; background: var(--primary); color: white; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; transition: var(--transition); text-decoration: none; text-align: center; }
+        .btn:hover { background: var(--primary-hover); transform: scale(1.03); }
+        .btn-buy { width: 100%; background: var(--dark); font-size: 1rem; }
+
+        /* Contact & About Layouts */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 40px; }
+        .contact-info { background: var(--dark); color: white; padding: 50px; border-radius: 30px; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .input-group label { font-weight: 600; font-size: 0.9rem; color: var(--dark); }
+        input, select, textarea { background: #f1f5f9; border: 2px solid transparent; padding: 15px; border-radius: 12px; font-size: 1rem; transition: var(--transition); }
+        input:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
+
+        /* Cart Sidebar */
+        .cart-modal { position: fixed; right: -450px; top: 0; width: 450px; height: 100%; background: white; z-index: 2000; transition: var(--transition); padding: 40px; box-shadow: -15px 0 40px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .cart-modal.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+
+        .chat-toggle { position: fixed; right: 25px; bottom: 25px; background: var(--primary); color: white; border-radius: 999px; padding: 14px 18px; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 15px 35px rgba(249,115,22,0.25); z-index: 2200; transition: var(--transition); }
+        .chat-toggle:hover { transform: translateY(-3px); }
+        .chat-toggle i { font-size: 1rem; }
+
+        .chat-window { position: fixed; right: 25px; bottom: 90px; width: 360px; max-width: calc(100% - 40px); background: white; box-shadow: 0 25px 45px rgba(15,23,42,0.18); border-radius: 28px; overflow: hidden; transform: translateY(20px); opacity: 0; visibility: hidden; transition: var(--transition); z-index: 2200; }
+        .chat-window.open { transform: translateY(0); opacity: 1; visibility: visible; }
+        .chat-header { background: linear-gradient(135deg, #f97316, #ea580c); color: white; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .chat-header div p { margin-top: 5px; color: rgba(255,255,255,0.85); font-size: 0.9rem; }
+        .chat-messages { max-height: 320px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; background: #f8fafc; }
+        .chat-message { padding: 14px 16px; border-radius: 18px; line-height: 1.5; font-size: 0.95rem; }
+        .chat-message.user { align-self: flex-end; background: var(--primary); color: white; border-bottom-right-radius: 6px; }
+        .chat-message.bot { align-self: flex-start; background: white; color: var(--dark); box-shadow: 0 6px 20px rgba(15,23,42,0.08); border-bottom-left-radius: 6px; }
+        .chat-input { display: flex; gap: 10px; padding: 18px 20px 20px; background: white; }
+        .chat-input input { flex: 1; border: 1px solid #e2e8f0; border-radius: 16px; padding: 14px 16px; font-size: 0.95rem; }
+        .chat-input input:focus { outline: none; border-color: var(--primary); }
+        .chat-input button { min-width: 90px; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 992px) {
+            .hero { flex-direction: column; text-align: center; padding-top: 100px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 3rem; }
+            .cart-modal { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a onclick="showPage('home')" class="logo">Home<span>Tech.</span></a>
+        <ul class="nav-links">
+            <li><a onclick="showPage('home')" class="active" id="nav-home">Trang chủ</a></li>
+            <li><a onclick="showPage('product')" id="nav-product">Sản phẩm</a></li>
+            <li><a onclick="showPage('about')" id="nav-about">Giới thiệu</a></li>
+            <li><a onclick="showPage('contact')" id="nav-contact">Liên hệ</a></li>
+        </ul>
+        <div class="cart-trigger" onclick="toggleCart()">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-count" id="cart-count">0</span>
+        </div>
+    </nav>
+
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Sáng Tạo Không Gian <span>Thông Minh.</span></h1>
+                <p>Nâng tầm trải nghiệm sống của bạn với hệ sinh thái đồ gia dụng điện tử hiện đại, chính hãng tại Đà Nẵng.</p>
+                <div style="display: flex; gap: 15px;">
+                    <button onclick="showPage('product')" class="btn">Mua sắm ngay</button>
+                    <button onclick="showPage('about')" class="btn" style="background: transparent; color: var(--dark); border: 2px solid var(--dark);">Tìm hiểu thêm</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="bg.jpg" alt="HomeTech Hero">
+            </div>
+        </section>
+    </div>
+
+    <div id="product" class="page">
+        <div class="container">
+            <div class="section-header">
+                <h2>Sản Phẩm Nổi Bật</h2>
+                <p>Công nghệ hiện đại cho cuộc sống tiện nghi</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="img-wrapper"><img src="noi chien.jpg"></div>
+                    <h3>Nồi Chiên Không Dầu</h3>
+                    <p class="price">2.490.000đ</p>
+                    <button class="btn btn-buy" onclick="addToCart('Nồi Chiên Không Dầu', 2490000)">Thêm vào giỏ hàng</button>
+                </div>
+                <div class="product-card">
+                    <div class="img-wrapper"><img src="may loc.jpg"></div>
+                    <h3>Máy Lọc Không Khí</h3>
+                    <p class="price">3.890.000đ</p>
+                    <button class="btn btn-buy" onclick="addToCart('Máy Lọc Không Khí', 3890000)">Thêm vào giỏ hàng</button>
+                </div>
+                <div class="product-card">
+                    <div class="img-wrapper"><img src="may hut bui.jpg"></div>
+                    <h3>Máy Hút Bụi S1</h3>
+                    <p class="price">6.200.000đ</p>
+                    <button class="btn btn-buy" onclick="addToCart('Máy Hút Bụi S1', 6200000)">Thêm vào giỏ hàng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="about" class="page">
+        <div class="container">
+            <div class="section-header">
+                <h2>Câu Chuyện HomeTech</h2>
+                <p>Uy tín tạo nên thương hiệu từ năm 2018</p>
+            </div>
+            <div class="grid-2">
+                <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=800" style="width: 100%; border-radius: 30px;">
+                <div>
+                    <h3 style="font-size: 2rem; margin-bottom: 20px;">Hơn cả một cửa hàng điện máy.</h3>
+                    <p style="margin-bottom: 20px;">Chúng tôi tuyển chọn những thiết bị gia dụng có thiết kế tinh tế nhất để phù hợp với không gian nội thất hiện đại của bạn.</p>
+                    <div style="display: flex; gap: 40px; margin-top: 30px;">
+                        <div><h4 style="color:var(--primary); font-size: 2rem;">10k+</h4><p>Đơn hàng</p></div>
+                        <div><h4 style="color:var(--primary); font-size: 2rem;">99%</h4><p>Hài lòng</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="page">
+        <div class="container">
+            <div class="section-header">
+                <h2>Liên Hệ</h2>
+                <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn</p>
+            </div>
+            <div class="grid-2" style="align-items: stretch;">
+                <div class="contact-info">
+                    <h3>Thông tin</h3>
+                    <p style="margin: 20px 0;"><i class="fa-solid fa-location-dot"></i> 123 Nguyễn Văn Linh, Đà Nẵng</p>
+                    <p style="margin-bottom: 20px;"><i class="fa-solid fa-phone"></i> 0236 888 9999</p>
+                    <div style="margin-top: 40px;">
+                        <p>Thời gian làm việc:</p>
+                        <p style="color: var(--primary);">8:00 - 21:00 (T2 - CN)</p>
+                    </div>
+                </div>
+                <form onsubmit="event.preventDefault(); alert('Cảm ơn bạn! Chúng tôi sẽ phản hồi sớm.')" style="background:white; padding: 40px; border-radius:30px;">
+                    <div class="input-group">
+                        <label>Họ và tên</label>
+                        <input type="text" placeholder="Ví dụ: Nguyễn Văn A" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email liên hệ</label>
+                        <input type="email" placeholder="email@domain.com" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Lời nhắn</label>
+                        <textarea rows="4" placeholder="Nội dung cần tư vấn..."></textarea>
+                    </div>
+                    <button type="submit" class="btn" style="width:100%">Gửi tin nhắn ngay</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-header">
+            <h3>Giỏ hàng (<span id="cart-count-side">0</span>)</h3>
+            <i class="fa-solid fa-xmark" style="cursor:pointer; font-size: 1.5rem;" onclick="toggleCart()"></i>
+        </div>
+        <div id="cart-items" style="flex: 1; overflow-y: auto;">
+            </div>
+        <div style="border-top: 1px solid #eee; padding-top: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-weight: 800; font-size: 1.2rem;">
+                <span>Tổng cộng:</span>
+                <span id="total-price">0đ</span>
+            </div>
+            <button class="btn" style="width: 100%" onclick="checkout()">Tiến hành thanh toán</button>
+        </div>
+    </div>
+
+    <div class="chat-toggle" id="chat-toggle" onclick="toggleChat()">
+        <i class="fa-solid fa-comments"></i>
+        <span>Tư vấn ngay</span>
+    </div>
+
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <div>
+                <strong></strong>
+                <p>Hỗ trợ tư vấn và đơn hàng nhanh</p>
+            </div>
+            <i class="fa-solid fa-xmark" onclick="toggleChat()" style="cursor:pointer;"></i>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="chat-message bot">Chào bạn! Tôi có thể giúp gì cho bạn hôm nay?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-input" placeholder="Nhập câu hỏi của bạn..." onkeypress="if(event.key === 'Enter') sendChat()">
+            <button class="btn btn-buy" onclick="sendChat()">Gửi</button>
+        </div>
+    </div>
+
+    <footer style="background: var(--dark); color: white; padding: 40px 0; text-align: center; margin-top: 80px;">
+        <p>&copy; 2026 HomeTech Studio. VKU Team.</p>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+            document.getElementById('nav-' + pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-modal').classList.toggle('open');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCart();
+            if(!document.getElementById('cart-modal').classList.contains('open')) toggleCart();
+        }
+
+        function updateCart() {
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-count-side').innerText = cart.length;
+            
+            const cartList = document.getElementById('cart-items');
+            const totalEl = document.getElementById('total-price');
+            
+            if (cart.length === 0) {
+                cartList.innerHTML = '<p style="text-align:center; margin-top:50px; color:var(--gray);">Chưa có sản phẩm nào.</p>';
+                totalEl.innerText = '0đ';
+                return;
+            }
+
+            let total = 0;
+            cartList.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                return `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; background:#f8fafc; padding:15px; border-radius:12px;">
+                        <div>
+                            <p style="font-weight:700;">${item.name}</p>
+                            <p style="color:var(--primary); font-size:0.9rem;">${item.price.toLocaleString()}đ</p>
+                        </div>
+                        <i class="fa-solid fa-trash" style="color:#ef4444; cursor:pointer;" onclick="removeFromCart(${index})"></i>
+                    </div>
+                `;
+            }).join('');
+            totalEl.innerText = total.toLocaleString() + 'đ';
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Giỏ hàng trống. Vui lòng thêm sản phẩm trước khi thanh toán.');
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            let summary = `Bạn có ${cart.length} sản phẩm trong giỏ hàng.\nTổng đơn hàng: ${total.toLocaleString()}đ\n\n`;
+            cart.forEach((item, index) => {
+                summary += `${index + 1}. ${item.name} - ${item.price.toLocaleString()}đ\n`;
+            });
+            const confirmed = confirm(summary + '\nXác nhận thanh toán đơn giản?');
+            if (confirmed) {
+                alert('Cảm ơn bạn! Đơn hàng của bạn đã được ghi nhận. Nhân viên sẽ liên hệ sớm.');
+                cart = [];
+                updateCart();
+                document.getElementById('cart-modal').classList.remove('open');
+            }
+        }
+
+        function toggleChat() {
+            const chatWindow = document.getElementById('chat-window');
+            chatWindow.classList.toggle('open');
+        }
+
+        function sendChat() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            addChatMessage(text, 'user');
+            input.value = '';
+
+            setTimeout(() => {
+                addChatMessage(getChatReply(text), 'bot');
+            }, 400);
+        }
+
+        function addChatMessage(text, sender) {
+            const messages = document.getElementById('chat-messages');
+            const messageEl = document.createElement('div');
+            messageEl.className = `chat-message ${sender}`;
+            messageEl.textContent = text;
+            messages.appendChild(messageEl);
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function getChatReply(message) {
+            const text = message.toLowerCase();
+            if (text.includes('giá') || text.includes('bao nhiêu') || text.includes('giá thành')) {
+                return 'Giá sản phẩm hiện đang nằm trong khoảng 2 triệu đến 9 triệu. Bạn cần tư vấn thêm về model nào?';
+            }
+            if (text.includes('giao hàng') || text.includes('ship') || text.includes('đặt hàng')) {
+                return 'Chúng tôi hỗ trợ giao hàng nhanh trong Đà Nẵng và hỗ trợ đặt trước, bạn chỉ cần cho tôi biết sản phẩm bạn quan tâm.';
+            }
+            if (text.includes('bảo hành') || text.includes('hậu mãi') || text.includes('bảo trì')) {
+                return 'Mỗi sản phẩm đều có bảo hành chính hãng. Chúng tôi hỗ trợ tư vấn chi tiết về chế độ bảo hành ngay.';
+            }
+            if (text.includes('khuyến mãi') || text.includes('ưu đãi') || text.includes('giảm giá')) {
+                return 'Hiện tại HomeTech có nhiều ưu đãi hấp dẫn. Hãy cho tôi biết sản phẩm bạn cần để tôi kiểm tra chương trình phù hợp.';
+            }
+            return 'Cảm ơn bạn! Chúng tôi sẽ liên hệ sớm để hỗ trợ chi tiết nhất. Bạn có thể hỏi về sản phẩm, giá cả hoặc giao hàng.';
+        }
+    </script>
+</body>
+</html>
