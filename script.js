@@ -338,3 +338,25 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ==========================================================================
+// HÀM XỬ LÝ KHI BẤM VÀO DANH MỤC CẢM HỨNG TẠI TRANG CHỦ
+// ==========================================================================
+function showCategoryPage(categoryName) {
+    // 1. Chuyển giao diện sang trang Sản phẩm (Sử dụng hàm showPage SPA có sẵn của bạn)
+    if (typeof showPage === 'function') {
+        showPage('product');
+    }
+
+    // 2. Tìm thẻ select bộ lọc danh mục trên trang Sản phẩm
+    const categorySelect = document.getElementById('filter-category');
+    
+    if (categorySelect) {
+        // Gán giá trị bộ lọc bằng tên danh mục vừa bấm ('kitchen', 'air', hoặc 'clean')
+        categorySelect.value = categoryName;
+        
+        // 3. Kích hoạt hàm lọc nâng cao của bạn để cập nhật lại danh sách sản phẩm hiển thị
+        if (typeof filterAdvanced === 'function') {
+            filterAdvanced();
+        }
+    }
+}
